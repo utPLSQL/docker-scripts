@@ -18,3 +18,4 @@ docker push utplsqlv3/oracledb:12c-r2-se2
 Now you can pull the image in your builds.
 
 The password for SYS/SYSTEM accounts is "oracle"
+PDB datafiles are stored at "/opt/oracle/oradata/pdbs" which is published as a volume you can define on docker start.
