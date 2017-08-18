@@ -14,3 +14,5 @@ rm -rf $ORACLE_HOME/inventory/backup/*
 rm -rf $ORACLE_HOME/network/tools/help/mgr/help_*
 # Temp location
 rm -rf /tmp/* 
+#remove templates
+rm -rf $ORACLE_HOME/assistants/dbca/templates
