@@ -1,5 +1,5 @@
 # docker-scripts
-The docker scripts are based on the Oracle docker-images repository but midified so that resulting image is small enough to be used with Travis CI.
+The docker scripts are based on the [Oracle docker-images](https://github.com/oracle/docker-images/) repository but modified so that resulting image is small enough to be used with Travis CI.
 
 To use the scripts you need to download the archive of the desired DB vesion from the Oracle website.
 
