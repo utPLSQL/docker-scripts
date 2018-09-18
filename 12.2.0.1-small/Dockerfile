@@ -24,8 +24,8 @@ FROM oraclelinux:7-slim
 
 # Maintainer
 # ----------
-LABEL maintainer="Pavel Kaplya <pazus@utplsql.org>" \
-      description="Oracle 12.2 database. Based on official docker images by Gerald Venzl (Oracle) - \
+LABEL maintainer="Jacek Gebal" \
+      description="Oracle 12.1 database. Based on official docker images by Gerald Venzl (Oracle) - \
 https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance/dockerfiles"
 
 # Environment variables required for this build (do NOT change)
@@ -36,12 +36,15 @@ ENV ORACLE_BASE=/opt/oracle \
     INSTALL_FILE_1="linuxx64_12201_database.zip" \
     INSTALL_RSP="db_inst.rsp" \
     CONFIG_RSP="dbca.rsp.tmpl" \
+    DB_TEMPLATE_FILE="MinimalDB.dbt" \
     PWD_FILE="setPassword.sh" \
     PERL_INSTALL_FILE="installPerl.sh" \
     RUN_FILE="runOracle.sh" \
     START_FILE="startDB.sh" \
     STOP_FILE="stopDB.sh" \
     CREATE_DB_FILE="createDB.sh" \
+    CLEANUP_DB_FILE="cleanupDB.sh" \
+    PREPARE_DB_FILE="prepareDB.sh" \
     CREATE_PDB_FILE="createPDB.sh" \
     SETUP_LINUX_FILE="setupLinuxEnv.sh" \
     CLEANUP_FILE="cleanup.sh" \
@@ -58,9 +61,8 @@ ENV INSTALL_DIR=$ORACLE_BASE/install \
 
 # Copy binaries
 # -------------
-RUN echo COPYING BINS
 COPY $INSTALL_FILE_1 $INSTALL_RSP $PERL_INSTALL_FILE $SETUP_LINUX_FILE $CHECK_SPACE_FILE $INSTALL_DB_BINARIES_FILE $INSTALL_DIR/
-COPY $RUN_FILE $START_FILE $STOP_FILE $CREATE_DB_FILE $CREATE_PDB_FILE $CONFIG_RSP $PWD_FILE $CLEANUP_FILE $ORACLE_BASE/
+COPY $RUN_FILE $START_FILE $STOP_FILE $CREATE_DB_FILE $CREATE_PDB_FILE $CONFIG_RSP $PWD_FILE $CLEANUP_FILE $CLEANUP_DB_FILE $PREPARE_DB_FILE $DB_TEMPLATE_FILE $ORACLE_BASE/
 
 RUN chmod ug+x $INSTALL_DIR/*.sh && \
     sync && \
@@ -77,7 +79,9 @@ RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
     rm -rf $INSTALL_DIR
 
 USER oracle
-RUN $ORACLE_BASE/$CREATE_DB_FILE && \
+RUN chmod ug+x $ORACLE_BASE/*.sh && \
+    $ORACLE_BASE/$CREATE_DB_FILE && \
+    $ORACLE_BASE/$CLEANUP_DB_FILE && \
     $ORACLE_BASE/$STOP_FILE && \
     $ORACLE_BASE/$CLEANUP_FILE
 

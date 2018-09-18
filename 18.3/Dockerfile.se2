@@ -24,7 +24,9 @@ FROM oraclelinux:7-slim
 
 # Maintainer
 # ----------
-MAINTAINER Pavel Kaplya <pazus@utplsql.org>
+LABEL maintainer="Pavel Kaplya <pazus@utplsql.org>" \
+      description="Oracle 12.2 database. Based on official docker images by Gerald Venzl (Oracle) - \
+https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance/dockerfiles"
 
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------
