@@ -14,7 +14,7 @@
 
 
 # Check whether ORACLE_SID is passed on
-export ORACLE_SID=${1:-ORCLCDB}
+export ORACLE_SID=${1:-ORCL}
 
 # Check whether ORACLE_PDB is passed on
 export ORACLE_PDB=${2:-ORCLPDB1}
@@ -47,7 +47,7 @@ echo "LISTENER =
 
 # Start LISTENER and run DBCA
 lsnrctl start &&
-dbca -silent -createDatabase -responseFile $ORACLE_BASE/dbca.rsp selected_languages=en ||
+dbca -silent -createDatabase -responseFile $ORACLE_BASE/dbca.rsp ||
  cat /opt/oracle/cfgtoollogs/dbca/$ORACLE_SID/$ORACLE_SID.log ||
  cat /opt/oracle/cfgtoollogs/dbca/$ORACLE_SID.log
 

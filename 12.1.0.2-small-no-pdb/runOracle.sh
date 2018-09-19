@@ -108,7 +108,6 @@ trap _kill SIGKILL
 
 # Default for ORACLE SID
 if [ "$ORACLE_SID" == "" ]; then
-#   export ORACLE_SID=ORCLCDB
    export ORACLE_SID=ORCL
 else
   # Check whether SID is no longer than 12 bytes

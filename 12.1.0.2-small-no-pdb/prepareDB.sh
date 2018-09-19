@@ -10,7 +10,7 @@
 #              $ORACLE_PDB: The PDB name
 # 
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
+#
 
 sqlplus / as sysdba <<EOF
 --Resize SYSTEM and SYSAUX by 50MB to make room for installed code without forcing extend
@@ -40,6 +40,7 @@ sqlplus / as sysdba <<EOF
 
     ALTER DATABASE DATAFILE '$ORACLE_BASE/oradata/$ORACLE_SID/undotbs00.dbf' RESIZE 250M;
     ALTER DATABASE TEMPFILE '$ORACLE_BASE/oradata/$ORACLE_SID/temp01.dbf' RESIZE 250M;
+    ALTER DATABASE DATAFILE '$ORACLE_BASE/oradata/$ORACLE_SID/users01.dbf' RESIZE 50M;
 
     ALTER DATABASE ADD LOGFILE GROUP 1 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo01.log') SIZE 250M;
     ALTER DATABASE ADD LOGFILE GROUP 2 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo02.log') SIZE 250M;

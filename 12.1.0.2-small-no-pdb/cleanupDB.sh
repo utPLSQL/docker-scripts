@@ -2,7 +2,7 @@
 ORACLE_SID=$1
 # Check whether ORACLE_SID is passed on
 if [ "$ORACLE_SID" == "" ]; then
-  ORACLE_SID=ORCLCDB
+  ORACLE_SID=ORCL
 fi;
 export ORACLE_SID
 
@@ -40,9 +40,9 @@ end;
     --minimize size of TEMP
     ALTER TABLESPACE temp SHRINK SPACE;
 
-    ALTER DATABASE ADD LOGFILE GROUP 4 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo04.log') SIZE 1M;
-    ALTER DATABASE ADD LOGFILE GROUP 5 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo05.log') SIZE 1M;
-    ALTER DATABASE ADD LOGFILE GROUP 6 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo06.log') SIZE 1M;
+    ALTER DATABASE ADD LOGFILE GROUP 4 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo04.log') SIZE 5M;
+    ALTER DATABASE ADD LOGFILE GROUP 5 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo05.log') SIZE 5M;
+    ALTER DATABASE ADD LOGFILE GROUP 6 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo06.log') SIZE 5M;
 
     declare
       current_log_group integer;
