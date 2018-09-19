@@ -48,6 +48,10 @@ end;
     ALTER DATABASE ADD LOGFILE GROUP 5 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo05.log') SIZE 5M;
     ALTER DATABASE ADD LOGFILE GROUP 6 ('$ORACLE_BASE/oradata/$ORACLE_SID/redo06.log') SIZE 5M;
 
+--Force XDB initialization in DB
+    CREATE TABLE TEMP_XDB_INIT(DUMMY XMLTYPE);
+    DROP TABLE TEMP_XDB_INIT;
+
     declare
       current_log_group integer;
     begin
