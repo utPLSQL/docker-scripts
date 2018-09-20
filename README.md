@@ -33,4 +33,7 @@ In case of any issues you have two choices:
  - change the image build configuration yourself
  
 The image scrips are provided as they are, no support or reliability is offered. Use at your own risk.
-  
+
+For small images you have an option to choose between PDB (Multi-tenant database) or non-PDB - (Single-tenant) database.
+
+Edit the `Dockerfile` before build and set the flag: `CREATE_PDB="false"` or `CREATE_PDB="true"`     

@@ -5,19 +5,10 @@
 # 
 # Since: November, 2016
 # Author: gerald.venzl@oracle.com
-# Description: Creates an Oracle Database based on following parameters:
-#              $ORACLE_SID: The Oracle SID and CDB name
-#              $ORACLE_PDB: The PDB name
-# 
+#
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 # 
 
-
-# Check whether ORACLE_SID is passed on
-export ORACLE_SID=${1:-ORCL}
-
-# Check whether ORACLE_PDB is passed on
-export ORACLE_PDB=${2:-ORCLPDB1}
 
 # Auto generate ORACLE PWD
 #ORACLE_PWD="`openssl rand -base64 8`1"
@@ -29,6 +20,7 @@ sed -i -e "s|###ORACLE_SID###|$ORACLE_SID|g" $ORACLE_BASE/dbca.rsp
 sed -i -e "s|###ORACLE_PDB###|$ORACLE_PDB|g" $ORACLE_BASE/dbca.rsp
 sed -i -e "s|###ORACLE_PWD###|$ORACLE_PWD|g" $ORACLE_BASE/dbca.rsp
 sed -i -e "s|###ORACLE_CHARACTERSET###|$ORACLE_CHARACTERSET|g" $ORACLE_BASE/dbca.rsp
+sed -i -e "s|###CREATE_PDB###|$CREATE_PDB|g" $ORACLE_BASE/dbca.rsp
 
 # Create network related config files (sqlnet.ora, tnsnames.ora, listener.ora)
 mkdir -p $ORACLE_HOME/network/admin
