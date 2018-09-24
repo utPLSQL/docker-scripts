@@ -51,7 +51,9 @@ ENV ORACLE_BASE=/opt/oracle \
     CHECK_SPACE_FILE="checkSpace.sh" \
     INSTALL_DB_BINARIES_FILE="installDBBinaries.sh" \
     ORACLE_PWD="oracle" \
-    ORACLE_PDB="ORCLPDB1"
+    ORACLE_PDB="ORCLPDB1" \
+    ORACLE_SID="ORCLCDB" \
+    CREATE_PDB="false"
 
 # Use second ENV so that variable get substituted
 ENV INSTALL_DIR=$ORACLE_BASE/install \

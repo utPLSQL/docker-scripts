@@ -116,27 +116,19 @@ trap _term SIGTERM
 # Set SIGKILL handler
 trap _kill SIGKILL
 
-# Default for ORACLE SID
-if [ "$ORACLE_SID" == "" ]; then
-   export ORACLE_SID=ORCLCDB
-else
-  # Check whether SID is no longer than 12 bytes
-  # Github issue #246: Cannot start OracleDB image
-  if [ "${#ORACLE_SID}" -gt 12 ]; then
-     echo "Error: The ORACLE_SID must only be up to 12 characters long."
-     exit 1;
-  fi;
-  
-  # Check whether SID is alphanumeric
-  # Github issue #246: Cannot start OracleDB image
-  if [[ "$ORACLE_SID" =~ [^a-zA-Z0-9] ]]; then
-     echo "Error: The ORACLE_SID must be alphanumeric."
-     exit 1;
-   fi;
+# Check whether SID is no longer than 12 bytes
+# Github issue #246: Cannot start OracleDB image
+if [ "${#ORACLE_SID}" -gt 12 ]; then
+  echo "Error: The ORACLE_SID must only be up to 12 characters long."
+  exit 1;
 fi;
 
-# Default for ORACLE PDB
-export ORACLE_PDB=${ORACLE_PDB:-ORCLPDB1}
+# Check whether SID is alphanumeric
+# Github issue #246: Cannot start OracleDB image
+if [[ "$ORACLE_SID" =~ [^a-zA-Z0-9] ]]; then
+  echo "Error: The ORACLE_SID must be alphanumeric."
+  exit 1;
+fi;
 
 # Default for ORACLE CHARACTERSET
 export ORACLE_CHARACTERSET=${ORACLE_CHARACTERSET:-AL32UTF8}
@@ -144,24 +136,20 @@ export ORACLE_CHARACTERSET=${ORACLE_CHARACTERSET:-AL32UTF8}
  # Start database
 $ORACLE_BASE/$START_FILE;
 
-# Check whether database already exists
-if [ -d $PDB_BASE_DIR/$ORACLE_PDB ]; then
-   symLinkFiles;
-   
-   # Make sure audit file destination exists
-   if [ ! -d $ORACLE_BASE/admin/$ORACLE_SID/adump ]; then
-      mkdir -p $ORACLE_BASE/admin/$ORACLE_SID/adump
-   fi;
-   
-  
-   
-else
-   
-   # Create database
-   $ORACLE_BASE/$CREATE_PDB_FILE
+if [ "$CREATE_PDB" == "true" ]; then
+  # Check whether database already exists
+  if [ -d $PDB_BASE_DIR/$ORACLE_PDB ]; then
+     symLinkFiles;
 
+     # Make sure audit file destination exists
+     if [ ! -d $ORACLE_BASE/admin/$ORACLE_SID/adump ]; then
+        mkdir -p $ORACLE_BASE/admin/$ORACLE_SID/adump
+     fi;
+  else
+     # Create database
+     $ORACLE_BASE/$CREATE_PDB_FILE
+  fi;
 fi;
-
 # Check whether database prepare was already executed
 if [ ! -f $ORACLE_BASE/oradata/$ORACLE_SID/redo03.log ]; then
    # Prepare database

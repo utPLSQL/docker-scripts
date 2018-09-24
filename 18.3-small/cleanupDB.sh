@@ -1,15 +1,10 @@
 #!/bin/bash
-ORACLE_SID=$1
-# Check whether ORACLE_SID is passed on
-if [ "$ORACLE_SID" == "" ]; then
-  ORACLE_SID=ORCLCDB
-fi;
-export ORACLE_SID
+
 
 sqlplus / as sysdba << EOF
   exec dbms_lock.sleep(30);
-  --Kill sessions holding rollback segments
 
+--Kill sessions holding rollback segments
 var kill_sess_holding_rollback varchar2(4000);
 
 begin
@@ -31,10 +26,6 @@ begin
   end;]';
 end;
  /
-
-  --Shrink TEMP and UNDO in CDB and PDBSEED
-  --CDBROOT
-    ALTER SESSION SET CONTAINER = CDB\$ROOT;
 
     EXEC EXECUTE IMMEDIATE :kill_sess_holding_rollback;
     --minimize size of UNDO TS
@@ -69,26 +60,34 @@ end;
     ALTER DATABASE DROP LOGFILE GROUP 2;
     ALTER DATABASE DROP LOGFILE GROUP 3;
 
-  --PDBSEED
-    ALTER PLUGGABLE DATABASE PDB\$SEED CLOSE;
-    ALTER PLUGGABLE DATABASE PDB\$SEED OPEN READ WRITE;
-
-    ALTER SESSION SET CONTAINER = PDB\$SEED;
-    --Initialize XDB in PDBSEED
-    CREATE TABLE TEMP_XDB_INIT(DUMMY XMLTYPE);
-    DROP TABLE TEMP_XDB_INIT;
-
-    EXEC EXECUTE IMMEDIATE :kill_sess_holding_rollback;
-    --minimize size of UNDO TS
-    CREATE UNDO TABLESPACE undotbs0 DATAFILE '$ORACLE_BASE/oradata/$ORACLE_SID/pdbseed/undotbs00.dbf' SIZE 1M AUTOEXTEND ON NEXT 1M;
-    ALTER SYSTEM SET UNDO_TABLESPACE=undotbs0;
-    DROP TABLESPACE undotbs1 INCLUDING CONTENTS AND DATAFILES;
-    --minimize size of TEMP
-    ALTER TABLESPACE temp SHRINK SPACE;
-
   exit;
 EOF
 
 rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo01.log
 rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo02.log
 rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo03.log
+
+if [ "$CREATE_PDB" == "true" ]; then
+
+    sqlplus / as sysdba << EOF
+      --PDBSEED
+        ALTER PLUGGABLE DATABASE PDB\$SEED CLOSE;
+        ALTER PLUGGABLE DATABASE PDB\$SEED OPEN READ WRITE;
+
+        ALTER SESSION SET CONTAINER = PDB\$SEED;
+        --Initialize XDB in PDBSEED
+        CREATE TABLE TEMP_XDB_INIT(DUMMY XMLTYPE);
+        DROP TABLE TEMP_XDB_INIT;
+
+        EXEC EXECUTE IMMEDIATE :kill_sess_holding_rollback;
+        --minimize size of UNDO TS
+        CREATE UNDO TABLESPACE undotbs0 DATAFILE '$ORACLE_BASE/oradata/$ORACLE_SID/pdbseed/undotbs00.dbf' SIZE 1M AUTOEXTEND ON NEXT 1M;
+        ALTER SYSTEM SET UNDO_TABLESPACE=undotbs0;
+        DROP TABLESPACE undotbs1 INCLUDING CONTENTS AND DATAFILES;
+        --minimize size of TEMP
+        ALTER TABLESPACE temp SHRINK SPACE;
+
+      exit;
+EOF
+
+fi;

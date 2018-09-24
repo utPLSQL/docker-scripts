@@ -1,10 +1,5 @@
 #!/bin/bash
-ORACLE_SID=$1
-# Check whether ORACLE_SID is passed on
-if [ "$ORACLE_SID" == "" ]; then
-  ORACLE_SID=ORCLCDB
-fi;
-export ORACLE_SID
+
 
 sqlplus / as sysdba << EOF
   exec dbms_lock.sleep(30);
@@ -31,10 +26,6 @@ begin
   end;]';
 end;
  /
-
-  --Shrink TEMP and UNDO in CDB and PDBSEED
-  --CDBROOT
-    ALTER SESSION SET CONTAINER = CDB\$ROOT;
 
     EXEC EXECUTE IMMEDIATE :kill_sess_holding_rollback;
     --minimize size of UNDO TS
@@ -69,6 +60,16 @@ end;
     ALTER DATABASE DROP LOGFILE GROUP 2;
     ALTER DATABASE DROP LOGFILE GROUP 3;
 
+  exit;
+EOF
+
+rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo01.log
+rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo02.log
+rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo03.log
+
+if [ "$CREATE_PDB" == "true" ]; then
+
+    sqlplus / as sysdba << EOF
   --PDBSEED
     ALTER PLUGGABLE DATABASE PDB\$SEED CLOSE;
     ALTER PLUGGABLE DATABASE PDB\$SEED OPEN READ WRITE;
@@ -89,6 +90,4 @@ end;
   exit;
 EOF
 
-rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo01.log
-rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo02.log
-rm -f $ORACLE_BASE/oradata/$ORACLE_SID/redo03.log
+fi;
