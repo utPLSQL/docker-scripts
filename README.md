@@ -49,6 +49,7 @@ docker build --no-cache --force-rm --squash -t utplsqlv3/oracledb:18c-se2       
 docker build --no-cache --force-rm --squash -t utplsqlv3/oracledb:12c-r1-se2-small -f Dockerfile_continue ./12.1.0.2-small > dockerBuild.log
 docker build --no-cache --force-rm --squash -t utplsqlv3/oracledb:12c-r2-se2-small -f Dockerfile_continue ./12.2.0.1-small > dockerBuild.log
 docker build --no-cache --force-rm --squash -t utplsqlv3/oracledb:18c-se2-small    -f Dockerfile_continue ./18.3-small     > dockerBuild.log
+docker build --no-cache --force-rm --squash -t utplsqlv3/oracledb:19c-se2-small    -f Dockerfile_continue ./19.3-small     > dockerBuild.log
 ```
 
 ### Pushing images to hub
@@ -60,6 +61,7 @@ docker push utplsqlv3/oracledb:18c-se2
 docker push utplsqlv3/oracledb:12c-r1-se2-small
 docker push utplsqlv3/oracledb:12c-r2-se2-small
 docker push utplsqlv3/oracledb:18c-se2-small
+docker push utplsqlv3/oracledb:19c-se2-small
 ```
 
 ### Pulling images from hub
@@ -73,6 +75,7 @@ docker pull utplsqlv3/oracledb:18c-se2
 docker pull utplsqlv3/oracledb:12c-r1-se2-small
 docker pull utplsqlv3/oracledb:12c-r2-se2-small
 docker pull utplsqlv3/oracledb:18c-se2-small
+docker pull utplsqlv3/oracledb:19c-se2-small
 ```
 
 ### Listing images
@@ -94,6 +97,7 @@ docker run -d --name 18c-se2          -p 1551:1521 --expose=1521 utplsqlv3/oracl
 docker run -d --name 12c-r1-se2-small -p 1531:1521 --expose=1521 utplsqlv3/oracledb:12c-r1-se2-small
 docker run -d --name 12c-r2-se2-small -p 1541:1521 --expose=1521 utplsqlv3/oracledb:12c-r2-se2-small
 docker run -d --name 18c-se2-small    -p 1551:1521 --expose=1521 utplsqlv3/oracledb:18c-se2-small
+docker run -d --name 19c-se2-small    -p 1551:1521 --expose=1521 utplsqlv3/oracledb:19c-se2-small
 ```
 
 ### Stopping a running container
@@ -104,7 +108,8 @@ docker stop 12c-r2-se2
 docker stop 18c-se2         
 docker stop 12c-r1-se2-small
 docker stop 12c-r2-se2-small
-docker stop 18c-se2-small   
+docker stop 18c-se2-small
+docker stop 19c-se2-small
 ```
 
 ### (Re)starting previously stopped container
@@ -115,7 +120,8 @@ docker start 12c-r2-se2
 docker start 18c-se2         
 docker start 12c-r1-se2-small
 docker start 12c-r2-se2-small
-docker start 18c-se2-small   
+docker start 18c-se2-small
+docker start 19c-se2-small
 ```
 
 ### Removing container (keeps the image)
@@ -126,6 +132,6 @@ docker rm 12c-r2-se2
 docker rm 18c-se2         
 docker rm 12c-r1-se2-small
 docker rm 12c-r2-se2-small
-docker rm 18c-se2-small   
+docker rm 18c-se2-small
+docker rm 19c-se2-small
 ```
-
