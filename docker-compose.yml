@@ -1,7 +1,8 @@
-version: '3'
+version: '3.3'
+
 services:
-  '12_1_0_2':
-    build: 12.1.0.2/Dockerfile
+  12_1_0_2:
+    build: ./12.1.0.2
     image: utplsqlv3/lukasztest:12c-r1-se2
     ports:
       - 1521:1521
