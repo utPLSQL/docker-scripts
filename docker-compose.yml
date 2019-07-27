@@ -1,0 +1,57 @@
+version: '3'
+services:
+  12_1_0_2:
+    build: 12.1.0.2/Dockerfile
+    image: utplsqlv3/lukasztest:12c-r1-se2
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  12_1_0_2_small:
+    build: 12.1.0.2-small/Dockerfile
+    image: utplsqlv3/lukasztest:12c-r1-se2-small
+    ports:
+      - 1521:1521
+      - 5500:5500
+
+  12_2_0_1:
+    build: 12.2.0.1/Dockerfile
+    image: utplsqlv3/lukasztest:12c-r2-se2
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  12_2_0_1_small:
+    build: 12.2.0.1-small/Dockerfile
+    image: utplsqlv3/lukasztest:12c-r2-se2-small
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  18_3:
+    build: 18.3/Dockerfile
+    image: utplsqlv3/lukasztest:18c-se2
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  18_3_small:
+    build: 18.3-small/Dockerfile
+    image: utplsqlv3/lukasztest:18c-se2-small
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  19_3:
+    build: 19.3/Dockerfile
+    image: utplsqlv3/lukasztest:19c-se2
+    ports:
+      - 1521:1521
+      - 5500:5500
+      
+  19_3_small:
+    build: 19.3-small/Dockerfile
+    image: utplsqlv3/lukasztest:19c-se2-small
+    ports:
+      - 1521:1521
+      - 5500:5500
