@@ -42,4 +42,5 @@ install:
 script:
   - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
   - docker image ls
-  - docker export -o ${ORACLE_VERSION}.zip ${ORACLE_VERSION}
+  - docker save -o ${ORACLE_VERSION}.zip ${ORACLE_VERSION}
+  - ls -ltr
