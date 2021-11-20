@@ -1,3 +1,4 @@
+language: node_js
 os: linux
 services:
   - docker
@@ -27,6 +28,7 @@ before_install:
   - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
 
 install:
+  - npm install -g casperjs
   - unzip utPLSQL.zip
   - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
   # Chmod is needed to allow for write access within from docker container volume
