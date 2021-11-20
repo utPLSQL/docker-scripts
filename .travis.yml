@@ -40,6 +40,6 @@ install:
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
 
 script:
-  - pwd && ls -l && docker build --no-cache --force-rm --force-rm -t ${ORACLE_VERSION} .
+  - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
   - docker image ls
   - docker export -o ${ORACLE_VERSION}.zip ${ORACLE_VERSION}
