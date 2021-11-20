@@ -26,9 +26,9 @@ before_install:
   - curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
   # download latest utPLSQL-cli release
   - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
-  - cat ~/.docker/config.json
-#  - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
-#  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
+  - docker version -f '{{.Server.Experimental}}'
+  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
+  - docker version -f '{{.Server.Experimental}}'
   - echo ""${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USER}" --password-stdin
 
 install:
@@ -37,9 +37,6 @@ install:
   - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
   # Chmod is needed to allow for write access within from docker container volume
   - chmod -R go+w ./${UTPLSQL_DIR}/source
-  - docker version -f '{{.Server.Experimental}}'
-  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
-  - docker version -f '{{.Server.Experimental}}'
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
 
 script:
