@@ -37,9 +37,12 @@ install:
   - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
   # Chmod is needed to allow for write access within from docker container volume
   - chmod -R go+w ./${UTPLSQL_DIR}/source
+  - docker version -f '{{.Server.Experimental}}'
+  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
+  - docker version -f '{{.Server.Experimental}}'
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
 
 script:
-  - pwd && ls -l && docker build --no-cache --force-rm -t ${ORACLE_VERSION} .
+  - pwd && ls -l && docker build --no-cache --force-rm --force-rm -t ${ORACLE_VERSION} .
   - docker image ls
-  - docker export ${ORACLE_VERSION}.zip ${ORACLE_VERSION}
+  - docker export -o ${ORACLE_VERSION}.zip ${ORACLE_VERSION}
