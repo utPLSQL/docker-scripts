@@ -1,0 +1,41 @@
+language: java
+os: linux
+services:
+  - docker
+
+env:
+  global:
+    - UT3_RELEASE_VERSION_SCHEMA=UT3
+    - UT3_TABLESPACE=users
+    - UTPLSQL_REPO="utPLSQL/utPLSQL"
+    - ORACLE_PWD="oracle"
+    - DOCKHER_HUB_REPO="utplsqlv3/oracledb"
+    - DOCKER_VOLUME="/home/oracle/host"
+    - DOCKER_ENV="-e SQLCLI=sqlplus -e UT3_RELEASE_VERSION_SCHEMA -e UT3_TABLESPACE -e ORACLE_PWD -e CONNECTION_STR -e UTPLSQL_DIR"
+    #utPLSQL released version directory
+    - UTPLSQL_DIR="utPLSQL"
+
+  jobs:
+    - ORACLE_VERSION="11g-r2-xe"          DOCKER_DIR='11.2.0.2-xe-small' DOWNLOAD_NAME='xe11g' CONNECTION_STR='127.0.0.1:1521/XE'                                          DOCKER_VOLUME="/mnt/host" DOCKER_OPTIONS='--shm-size=1g'
+    - ORACLE_VERSION="12c-r1-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
+
+before_install:
+
+  #Allow for sonar to blame issues
+  - git fetch --unshallow
+  # download latest utPLSQL release
+  - curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
+  # download latest utPLSQL-cli release
+  - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
+
+install:
+  - unzip utPLSQL.zip
+  - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
+
+  # Chmod is needed to allow for write access within from docker container volume
+  - chmod -R go+w ./${UTPLSQL_DIR}/source
+
+script:
+  - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
+  - cd ${DOCKER_DIR} && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
+  - docker image ls
