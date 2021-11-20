@@ -31,9 +31,9 @@ before_install:
 install:
   - unzip utPLSQL.zip
   - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
-
   # Chmod is needed to allow for write access within from docker container volume
   - chmod -R go+w ./${UTPLSQL_DIR}/source
+  - cd ${DOCKER_DIR} && .././travis/download.sh ${DOWNLOAD_NAME}
 
 script:
   - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
