@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+
 if [ "$ORACLE_OTN_USER" == "" ] || [ "$ORACLE_OTN_PASSWORD" == "" ]; then
     echo "Error: Oracle OTN username/password not specified."
     exit 1
@@ -11,7 +14,7 @@ PRODUCT=""
 # Call the casperjs script to return the download url.
 # Then download the file using curl.
 downloadFile() {
-    downloadUrl=$(exec casperjs download.js $ORACLE_OTN_USER $ORACLE_OTN_PASSWORD $1 $2)
+    downloadUrl=$(exec casperjs ${SCRIPT_DIR}/download.js $ORACLE_OTN_USER $ORACLE_OTN_PASSWORD $1 $2)
     downloadUrl=${downloadUrl%$'\r'}
     echo "DownloadURL: $downloadUrl"
     curl -o $3 -L "$downloadUrl"
