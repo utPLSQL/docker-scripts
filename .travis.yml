@@ -37,5 +37,5 @@ install:
 
 script:
   - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
-  - cd ${DOCKER_DIR} && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
+  - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
   - docker image ls
