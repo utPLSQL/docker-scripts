@@ -27,7 +27,7 @@ before_install:
   # download latest utPLSQL-cli release
   - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
   - cat ~/.docker/config.json
-  - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
+#  - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
 #  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
   - echo ""${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USER}" --password-stdin
 
@@ -40,5 +40,5 @@ install:
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
 
 script:
-  - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
+  - pwd && ls -l && docker build --no-cache --squash -t ${ORACLE_VERSION} .
   - docker image ls
