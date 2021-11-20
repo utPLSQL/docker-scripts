@@ -23,7 +23,7 @@ env:
 before_install:
 
   # download latest utPLSQL release
-  - curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
+#  - curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
   # download latest utPLSQL-cli release
 #  - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
   - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
@@ -33,8 +33,8 @@ before_install:
 
 install:
   - npm install -g casperjs
-  - unzip utPLSQL.zip
-  - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
+#  - unzip utPLSQL.zip
+#  - unzip utPLSQL-cli.zip && chmod -R u+x utPLSQL-cli
   # Chmod is needed to allow for write access within from docker container volume
   - chmod -R go+w ./${UTPLSQL_DIR}/source
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
