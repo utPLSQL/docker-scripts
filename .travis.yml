@@ -26,8 +26,10 @@ before_install:
   - curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
   # download latest utPLSQL-cli release
   - curl -Lk -o utPLSQL-cli.zip $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
-  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
-  - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
+  - cat ~/.docker/config.json
+  - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
+#  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
+  - echo ""${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USER}" --password-stdin
 
 install:
   - npm install -g casperjs
