@@ -17,7 +17,7 @@ env:
     - UTPLSQL_DIR="utPLSQL"
 
   jobs:
-    - ORACLE_VERSION="11g-r2-xe"          DOCKER_DIR='11.2.0.2-xe-small' DOWNLOAD_NAME='xe11g' CONNECTION_STR='127.0.0.1:1521/XE'                                          DOCKER_VOLUME="/mnt/host" DOCKER_OPTIONS='--shm-size=1g'
+    - ORACLE_VERSION="11g-xe-small"       DOCKER_DIR='11.2.0.2-xe-small' DOWNLOAD_NAME='xe11g' CONNECTION_STR='127.0.0.1:1521/XE'                                          DOCKER_VOLUME="/mnt/host" DOCKER_OPTIONS='--shm-size=1g'
 #    - ORACLE_VERSION="12c-r1-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
 #    - ORACLE_VERSION="12c-r2-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
 #    - ORACLE_VERSION="18c-se2-small"      DOCKER_DIR='18.3-small'        DOWNLOAD_NAME='18.3' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
