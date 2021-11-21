@@ -30,6 +30,14 @@ while getopts "p:" OPTNAME; do
     esac
 done
 
+if [ "$PRODUCT" == "xe11g" ]; then
+    agreementUrl="http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html"
+    downloadUrl="https://edelivery.oracle.com/akam/otn/linux/oracle11g/xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip"
+    outputFile=oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+    downloadFile $agreementUrl $downloadUrl $outputFile
+    exit 0
+fi
+
 if [ "$PRODUCT" == "se12c" ]; then
     agreementUrl="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
     downloadUrl="http://download.oracle.com/otn/linux/oracle12c/121020/linuxamd64_12102_database_se2_1of2.zip"
@@ -54,10 +62,26 @@ if [ "$PRODUCT" == "ee12c" ]; then
     exit 0
 fi
 
-if [ "$PRODUCT" == "xe11g" ]; then
-    agreementUrl="http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html"
-    downloadUrl="https://edelivery.oracle.com/akam/otn/linux/oracle11g/xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip"
-    outputFile=oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+if [ "$PRODUCT" == "12.2" ]; then
+    agreementUrl="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+    downloadUrl="https://download.oracle.com/otn/linux/oracle12c/122010/linuxx64_12201_database.zip"
+    outputFile=linuxx64_12201_database.zip
+    downloadFile $agreementUrl $downloadUrl $outputFile
+    exit 0
+fi
+
+if [ "$PRODUCT" == "18.3" ]; then
+    agreementUrl="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+    downloadUrl="https://download.oracle.com/otn/linux/oracle18c/180000/LINUX.X64_180000_db_home.zip"
+    outputFile=LINUX.X64_180000_db_home.zip
+    downloadFile $agreementUrl $downloadUrl $outputFile
+    exit 0
+fi
+
+if [ "$PRODUCT" == "19.3" ]; then
+    agreementUrl="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+    downloadUrl="https://download.oracle.com/otn/linux/oracle19c/190000/LINUX.X64_193000_db_home.zip"
+    outputFile=LINUX.X64_193000_db_home.zip
     downloadFile $agreementUrl $downloadUrl $outputFile
     exit 0
 fi

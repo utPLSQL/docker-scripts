@@ -18,7 +18,10 @@ env:
 
   jobs:
     - ORACLE_VERSION="11g-r2-xe"          DOCKER_DIR='11.2.0.2-xe-small' DOWNLOAD_NAME='xe11g' CONNECTION_STR='127.0.0.1:1521/XE'                                          DOCKER_VOLUME="/mnt/host" DOCKER_OPTIONS='--shm-size=1g'
-    - ORACLE_VERSION="12c-r1-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
+#    - ORACLE_VERSION="12c-r1-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
+#    - ORACLE_VERSION="12c-r2-se2-small"   DOCKER_DIR='12.1.0.2-small'    DOWNLOAD_NAME='se12c' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
+#    - ORACLE_VERSION="18c-se2-small"      DOCKER_DIR='18.3-small'        DOWNLOAD_NAME='18.3' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
+#    - ORACLE_VERSION="19c-se2-small"      DOCKER_DIR='19.3-small'        DOWNLOAD_NAME='19.3' CONNECTION_STR='127.0.0.1:1521/ORCLCDB'
 
 before_install:
 
@@ -40,7 +43,5 @@ install:
   - cd ${DOCKER_DIR} && ../.travis/download.sh -p ${DOWNLOAD_NAME}
 
 script:
-  - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${ORACLE_VERSION} .
-  - docker image ls
-  - docker save ${ORACLE_VERSION} | gzip > ${ORACLE_VERSION}.gz
-  - ls -ltr
+  - pwd && ls -l && docker build --no-cache --force-rm --squash -t ${DOCKHER_HUB_REPO}:${ORACLE_VERSION} .
+  - docker push ${DOCKHER_HUB_REPO}:${ORACLE_VERSION}
