@@ -82,7 +82,12 @@ WORKDIR ${ORACLE_BASE}
 
 VOLUME ["$PDB_BASE_DIR"]
 EXPOSE 1521 5500
-    
+
+
+RUN echo -e "NAMES.DIRECTORY_PATH = (EZCONNECT, TNSNAMES, HOSTNAME)\n"\
+"DISABLE_OOB=ON\n"\
+"BREAK_POLL_SKIP=1000\n"\ > "${ORACLE_HOME}"/network/admin/sqlnet.ora
+
 # Define default command to start Oracle Database. 
 CMD $ORACLE_BASE/$RUN_FILE
 
